@@ -1,0 +1,40 @@
+import time, string
+
+digits = string.digits
+week_days = ['MON', 'TUE', 'WED', 'THU', 'FRI']
+timetable = open('timetable.csv', 'r')
+
+def find_classes(t, digits):
+    #find all the different classes in the timetable (eg. 1A, 2A ...)
+    all_classes = []
+
+    for line in t:
+        line = list(line)
+        
+        
+        for i in range(len(line)):
+
+            if line[i] == 'A' and line[i-1] in digits:
+                cls = line[i-1]+line[i]
+
+                if cls not in all_classes:
+                    all_classes.append(cls)
+
+                
+    return all_classes
+
+classes = find_classes(timetable, digits)
+print(classes)
+
+    #find all the days in the timetable (eg. MON, TUE ...)
+all_days = []
+
+for line in timetable:
+
+    for day in week_days:
+
+        if day in line and day not in all_days:
+            all_days.append(day)
+
+print(all_days)
+ 
