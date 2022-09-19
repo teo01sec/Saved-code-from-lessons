@@ -2,39 +2,46 @@ import time, string
 
 digits = string.digits
 week_days = ['MON', 'TUE', 'WED', 'THU', 'FRI']
-timetable = open('timetable.csv', 'r')
+with open('timetable.csv', 'r') as t:
+    
+    def find_classes(t, digits):
+        #find all the different classes in the timetable (eg. 1A, 2A ...)
+        all_classes = []
 
-def find_classes(t, digits):
-    #find all the different classes in the timetable (eg. 1A, 2A ...)
-    all_classes = []
+        for line in t:
+            line = list(line)
+            
+            
+            for i in range(len(line)):
 
-    for line in t:
-        line = list(line)
-        
-        
-        for i in range(len(line)):
+                if line[i] == 'A' and line[i-1] in digits:
+                    cls = line[i-1]+line[i]
 
-            if line[i] == 'A' and line[i-1] in digits:
-                cls = line[i-1]+line[i]
+                    if cls not in all_classes:
+                        all_classes.append(cls)
 
-                if cls not in all_classes:
-                    all_classes.append(cls)
+                    
+        return all_classes
 
-                
-    return all_classes
+    def find_days(t, week_days):
+        #find all the days in the timetable (eg. MON, TUE ...)
+        all_days = []
 
-classes = find_classes(timetable, digits)
-print(classes)
+        for line in t:
 
-    #find all the days in the timetable (eg. MON, TUE ...)
-all_days = []
+            for day in week_days:
 
-for line in timetable:
+                if day in line and day not in all_days:
+                    all_days.append(day)
 
-    for day in week_days:
+        return all_days
 
-        if day in line and day not in all_days:
-            all_days.append(day)
 
-print(all_days)
- 
+    days = find_days(t, week_days)
+    classes = find_classes(t, digits)
+
+
+
+
+    print(days)
+    print(classes)
