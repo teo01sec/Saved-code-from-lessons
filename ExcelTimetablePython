@@ -2,46 +2,46 @@ import time, string
 
 digits = string.digits
 week_days = ['MON', 'TUE', 'WED', 'THU', 'FRI']
-with open('timetable.csv', 'r') as t:
+timetable = open('timetable.csv', 'r')
     
-    def find_classes(t, digits):
-        #find all the different classes in the timetable (eg. 1A, 2A ...)
-        all_classes = []
+def find_classes(t, digits):
+    #find all the different classes in the timetable (eg. 1A, 2A ...)
+    all_classes = []
+    # print('Classes\n', t.read())
+    for line in t:
+        line = list(line)
+        
+        for i in range(len(line)):
 
-        for line in t:
-            line = list(line)
-            
-            
-            for i in range(len(line)):
+            if line[i] == 'A' and line[i-1] in digits:
 
-                if line[i] == 'A' and line[i-1] in digits:
-                    cls = line[i-1]+line[i]
+                current_class = line[i-1]+line[i]
 
-                    if cls not in all_classes:
-                        all_classes.append(cls)
+                if current_class not in all_classes:
+                    all_classes.append(current_class)
+    t.seek(0)
+    return all_classes
+    
 
-                    
-        return all_classes
+def find_days(t, week_days):
+    #find all the days in the timetable (eg. MON, TUE ...)
+    # print('Days\n', t.read())
+    all_days = []
+    for line in t:
 
-    def find_days(t, week_days):
-        #find all the days in the timetable (eg. MON, TUE ...)
-        all_days = []
+        for day in week_days:
 
-        for line in t:
+            if day in line and day not in all_days:
+                all_days.append(day)
 
-            for day in week_days:
-
-                if day in line and day not in all_days:
-                    all_days.append(day)
-
-        return all_days
-
-
-    days = find_days(t, week_days)
-    classes = find_classes(t, digits)
+    t.seek(0)
+    return all_days
 
 
+days = find_days(timetable, week_days)
+classes = find_classes(timetable, digits)
 
+print(days)
+print(classes)
 
-    print(days)
-    print(classes)
+timetable.close()
