@@ -36,6 +36,23 @@ def find_days(t, week_days):
 
     t.seek(0)
     return all_days
+    
+def display(t):
+    rows = t.readlines()
+
+    allrows=[]
+    for singlerow in rows:
+        fields = singlerow.split(",")
+        if (singlerow != rows[-1]):
+            fields[-1]=str(fields[-1][:-1])
+        allrows.append(fields)
+
+    for x in allrows:
+        for singlefield in x:
+            if (singlefield != x[-1]):
+                print(singlefield + " , ",end="")
+            else: print(singlefield)
+   
 
 
 days = find_days(timetable, week_days)
@@ -43,5 +60,6 @@ classes = find_classes(timetable, digits)
 
 print(days)
 print(classes)
+display(timetable)
 
 timetable.close()
